@@ -1,0 +1,16 @@
+[project]
+name = "pure-cosi"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "grpcio>=1.83.0",
+    "grpcio-tools>=1.83.0",
+    "py-pure-client>=1.92.0",
+]
+
+[dependency-groups]
+dev = [
+    "ipdb>=0.13.13",
+]
