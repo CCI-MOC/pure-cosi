@@ -3,6 +3,8 @@ import os
 
 class Config:
     def __init__(self):
+        self.debug = os.getenv("DEBUG", "false").lower() in ("true", "1", "yes")
+
         # FlashBlade Management IP/FQDN and API Token
         self.fb_target = os.getenv("PUREFB_TARGET", "10.3.11.50")
         self.fb_api_token = os.getenv("PUREFB_API_TOKEN", "")

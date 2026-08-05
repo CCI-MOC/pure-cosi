@@ -23,6 +23,10 @@ logger = logging.getLogger(__name__)
 def serve():
     cfg = Config()
 
+    if cfg.debug:
+        logging.getLogger().setLevel(logging.DEBUG)
+        logger.debug("Debug logging is ENABLED")
+
     logger.info("Initializing Pure Storage FlashBlade Manager...")
     fb_manager = FlashBladeManager(
         target=cfg.fb_target,
