@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pure-cosi-driver
+  namespace: pure-cosi-system
+  labels:
+    app.kubernetes.io/name: pure-cosi-driver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: pure-cosi-driver
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: pure-cosi-driver
+      annotations:
+        k8s.v1.cni.cncf.io/networks: "eno2-storage-net" # for driver to reach management API
+    spec:
+      serviceAccountName: pure-cosi-driver-sa
+      containers:
+        # COSI Provisioner Sidecar
+        - name: objectstorage-sidecar
+          image: registry.k8s.io/sig-storage/objectstorage-sidecar:v0.2.2
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: COSI_ENDPOINT
+            value: unix:///var/lib/cosi/cosi.sock
+          args:
+            - "-v=4"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /var/lib/cosi
+
+        # Pure Storage FlashBlade COSI Driver
+        - name: pure-cosi-driver
+          image: quay.io/naved_redhat/pure-cosi-driver:v0.1.0
+          imagePullPolicy: Always
+          env:
+            - name: COSI_SOCKET_PATH
+              value: "/var/lib/cosi/cosi.sock"
+          envFrom:
+            - secretRef:
+                name: pure-cosi-config
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /var/lib/cosi
+
+      volumes:
+        - name: socket-dir
+          emptyDir: {}

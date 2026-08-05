@@ -1,0 +1,5 @@
+kind: BucketAccessClass
+metadata:
+  name: fb-acces
+driverName: flashblade.cosi.purestorage.com
+authenticationType: KEY

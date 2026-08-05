@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pure-cosi-driver-binding
+subjects:
+  - kind: ServiceAccount
+    name: pure-cosi-driver-sa
+    namespace: pure-cosi-system
+roleRef:
+  kind: ClusterRole
+  name: pure-cosi-driver-role
+  apiGroup: rbac.authorization.k8s.io
