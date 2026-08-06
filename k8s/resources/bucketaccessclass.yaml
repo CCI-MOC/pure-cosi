@@ -1,5 +1,18 @@
+---
+apiVersion: objectstorage.k8s.io/v1alpha1
 kind: BucketAccessClass
 metadata:
-  name: fb-acces
+  name: fb-access-rw
 driverName: flashblade.cosi.purestorage.com
 authenticationType: KEY
+parameters:
+  accessMode: readwrite
+---
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketAccessClass
+metadata:
+  name: fb-access-ro
+driverName: flashblade.cosi.purestorage.com
+authenticationType: KEY
+parameters:
+  accessMode: readonly

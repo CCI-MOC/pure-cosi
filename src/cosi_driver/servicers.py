@@ -67,9 +67,11 @@ class ProvisionerServicer(cosi_pb2_grpc.ProvisionerServicer):
         Triggered when a BucketAccess is created.
         """
         try:
+            requested_mode = request.parameters.get("accessMode", "readwrite")
             access_key, secret_key = self.fb.grant_access(
                 user_name=request.name,
-                bucket_name=request.bucket_id
+                bucket_name=request.bucket_id,
+                access_mode=requested_mode
             )
 
             # Package credentials into the 'secrets' map required by the COSI spec

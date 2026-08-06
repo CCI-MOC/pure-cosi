@@ -1,0 +1,20 @@
+---
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketClaim
+metadata:
+  name: naved-testbucket2
+  namespace: pure-cosi-system
+spec:
+  bucketClassName: fb-bucket
+  protocols:
+    - s3
+---
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketAccess
+metadata:
+  name: naved-test-access
+  namespace: pure-cosi-system
+spec:
+  bucketAccessClassName: fb-acces
+  bucketClaimName: naved-testbucket2
+  credentialsSecretName: flashblade-s3-creds

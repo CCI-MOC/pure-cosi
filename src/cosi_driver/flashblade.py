@@ -124,8 +124,9 @@ class FlashBladeManager:
             actions=["s3:GetBucketLocation", "s3:ListBucket"],
             resources=[bucket_name]
         )
-
-        if access_mode.lower() == "readwrite":
+        normalized_mode = access_mode.lower().replace("-", "").replace("_", "").strip()
+        if normalized_mode in ["readwrite", "rw"]:
+            logger.debug("Setting readwrite access mode")
             object_actions = [
                 "s3:AbortMultipartUpload",
                 "s3:DeleteObject",
@@ -134,6 +135,7 @@ class FlashBladeManager:
                 "s3:PutObject"
             ]
         else:
+            logger.debug("Defaulting to read only access because {normalized_mode} is not understood.")
             object_actions = [
                 "s3:GetObject",
                 "s3:ListMultipartUploadParts"

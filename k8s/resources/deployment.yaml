@@ -34,11 +34,13 @@ spec:
 
         # Pure Storage FlashBlade COSI Driver
         - name: pure-cosi-driver
-          image: quay.io/naved_redhat/pure-cosi-driver:v0.1.0
+          image: ghcr.io/naved001/pure-cosi:main
           imagePullPolicy: Always
           env:
             - name: COSI_SOCKET_PATH
               value: "/var/lib/cosi/cosi.sock"
+            - name: DEBUG
+              value: "true"
           envFrom:
             - secretRef:
                 name: pure-cosi-config
