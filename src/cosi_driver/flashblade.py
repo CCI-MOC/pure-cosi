@@ -1,3 +1,7 @@
+# pypureclient exposes model classes via a lazy module __getattr__, which the
+# type checker cannot resolve (it misinfers them as str). Suppress call checks
+# for this file; the SDK is untyped and these are false positives.
+# pyright: reportCallIssue=false
 import logging
 from pypureclient import flashblade
 from pypureclient.flashblade import (
@@ -18,7 +22,7 @@ class FlashBladeManager:
         api_token: str,
         s3_account: str,
         s3_endpoint: str,
-        realm: str = None,
+        realm: str | None = None,
     ):
         logger.debug(
             f"Initializing FlashBladeManager with target={target}, s3_account={s3_account}, realm={realm}"
