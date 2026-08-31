@@ -2,11 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pure-cosi-driver
-  namespace: pure-cosi-system
   labels:
     app.kubernetes.io/name: pure-cosi-driver
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: pure-cosi-driver
@@ -15,7 +14,7 @@ spec:
       labels:
         app.kubernetes.io/name: pure-cosi-driver
       annotations:
-        k8s.v1.cni.cncf.io/networks: "eno2-storage-net" # for driver to reach management API
+        k8s.v1.cni.cncf.io/networks: "storage-network" # for driver to reach management API
     spec:
       serviceAccountName: pure-cosi-driver-sa
       containers:
