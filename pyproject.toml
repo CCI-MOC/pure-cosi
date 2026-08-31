@@ -13,4 +13,21 @@ dependencies = [
 [dependency-groups]
 dev = [
     "ipdb>=0.13.13",
+    "pytest>=8.0",
+    "pytest-mock>=3.14",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "src/cosi_driver"]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+typeCheckingMode = "standard"
+extraPaths = ["src", "src/cosi_driver"]
+
+[tool.basedpyright]
+venvPath = "."
+venv = ".venv"
+typeCheckingMode = "standard"
+extraPaths = ["src", "src/cosi_driver"]
