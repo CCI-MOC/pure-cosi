@@ -5,8 +5,10 @@ namespace: pure-cosi-system
 resources:
   - resources/namespace.yaml
   - resources/serviceaccount.yaml
-  - resources/clusterrole.yaml
-  - resources/clusterrolebinding.yaml
+  - resources/driver-rbacs/clusterrole.yaml
+  - resources/driver-rbacs/clusterrolebinding.yaml
+  - resources/user-rbacs/editcr.yaml
+  - resources/user-rbacs/viewcr.yaml
   - resources/externalsecret.yaml
   - resources/deployment.yaml
   - resources/bucketclass.yaml
