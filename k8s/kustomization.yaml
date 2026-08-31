@@ -1,12 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: pure-cosi-system
 
 resources:
   - resources/namespace.yaml
   - resources/serviceaccount.yaml
   - resources/clusterrole.yaml
   - resources/clusterrolebinding.yaml
-  - resources/secret.yaml
+  - resources/externalsecret.yaml
   - resources/deployment.yaml
   - resources/bucketclass.yaml
   - resources/bucketaccessclass.yaml

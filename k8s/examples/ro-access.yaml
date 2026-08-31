@@ -1,0 +1,8 @@
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketAccess
+metadata:
+  name: example-access-ro
+spec:
+  bucketAccessClassName: fb-access-ro
+  bucketClaimName: example-bucket
+  credentialsSecretName: example-s3-creds-ro
