@@ -1,6 +1,6 @@
 # COSI Driver for Flashblade
 
-This is an UOFFICIAL and NON SUPPORTED Driver. Use at your own risk.
+This is an UNOFFICIAL and NON SUPPORTED Driver. Use at your own risk.
 
 The code works with release 0.2 so everything must use 0.2 APIs (v1alpha1).
 
