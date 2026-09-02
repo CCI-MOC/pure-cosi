@@ -1,5 +1,7 @@
 # COSI Driver for Flashblade
 
+This is an UOFFICIAL and NON SUPPORTED Driver. Use at your own risk.
+
 The code works with release 0.2 so everything must use 0.2 APIs (v1alpha1).
 
 https://github.com/kubernetes-sigs/container-object-storage-interface/tree/release-0.2
