@@ -5,4 +5,4 @@ metadata:
 driverName: flashblade.cosi.purestorage.com
 deletionPolicy: Delete
 parameters:
-  s3Endpoint: "10.8.0.9"
+  s3Endpoint: storage.massopen.cloud
