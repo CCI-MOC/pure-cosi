@@ -33,7 +33,7 @@ spec:
 
         # Pure Storage FlashBlade COSI Driver
         - name: pure-cosi-driver
-          image: ghcr.io/naved001/pure-cosi:main
+          image: ghcr.io/cci-moc/pure-cosi:main
           imagePullPolicy: Always
           env:
             - name: COSI_SOCKET_PATH

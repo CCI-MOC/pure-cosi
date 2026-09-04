@@ -44,5 +44,5 @@ grpcurl -plaintext \
 * Create (or reuse the NFS server) a server and put it on a subnet that's accessible for your openshift users.
 * Create an object store account in this realm and export it with the server.
 * In this repo go to `k8s` and modify the ExternalSecret.
-* The deployment has an annotation so that the driver can reach the management endpoint - so take care of that.
+* The driver deployment has an annotation that requires a network-attachment-definition be created. An example is provided but not included in the kustomization file: https://github.com/CCI-MOC/pure-cosi/blob/main/k8s/driver/resources/network-attachment-definition.yaml
 * Deploy it with `oc apply -k .`. This will deploy the COSI CRDs, controllers and the driver.
