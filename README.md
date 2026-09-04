@@ -38,22 +38,11 @@ grpcurl -plaintext \
 
 ## Deploying it on OpenShift
 
-### Install the COSI CRDs and controller:
-
-```
-git clone https://github.com/kubernetes-sigs/container-object-storage-interface
-cd container-object-storage-interface/
-git checkout tags/v0.2.2
-oc apply -k .
-```
-
-Wait for it to create the CRDs.
-
-### Deploy the COSI driver
+### Deploy the COSI Controller, CRDs and COSI driver
 
 * On your flashblade create a realm, a token scoped to it. If you are already using the CSI driver then the same realm and token can be used.
-* Create a new server and put it on a subnet that's accessible for your openshift users. Reusing the server used for NFS won't work because that's not user facing.
+* Create (or reuse the NFS server) a server and put it on a subnet that's accessible for your openshift users.
 * Create an object store account in this realm and export it with the server.
-* In this repo go to `k8s` and modify the secret with your configuration.
+* In this repo go to `k8s` and modify the ExternalSecret.
 * The deployment has an annotation so that the driver can reach the management endpoint - so take care of that.
-* Deploy it with oc apply -k .
+* Deploy it with `oc apply -k .`. This will deploy the COSI CRDs, controllers and the driver.
