@@ -4,3 +4,25 @@ kind: Kustomization
 resources:
   - https://github.com/kubernetes-sigs/container-object-storage-interface?ref=v0.2.2
   - driver
+
+patches:
+  - target:
+      kind: Deployment
+      name: container-object-storage-controller
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: container-object-storage-controller
+      spec:
+        template:
+          spec:
+            containers:
+              - name: objectstorage-controller
+                resources:
+                  requests:
+                    cpu: 10m
+                    memory: 32Mi
+                  limits:
+                    cpu: 200m
+                    memory: 128Mi

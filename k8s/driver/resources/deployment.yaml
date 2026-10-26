@@ -27,6 +27,13 @@ spec:
             value: unix:///var/lib/cosi/cosi.sock
           args:
             - "-v=4"
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
           volumeMounts:
             - name: socket-dir
               mountPath: /var/lib/cosi
@@ -40,6 +47,13 @@ spec:
               value: "/var/lib/cosi/cosi.sock"
             - name: DEBUG
               value: "true"
+          resources:
+            requests:
+              cpu: 10m
+              memory: 192Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
           envFrom:
             - secretRef:
                 name: pure-cosi-config
