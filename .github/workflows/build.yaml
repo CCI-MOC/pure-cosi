@@ -24,6 +24,18 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    # The driver, plus FIPS builds of the upstream COSI controller and
+    # sidecar (images/), published as <repo>/cosi-controller and
+    # <repo>/cosi-sidecar.
+    strategy:
+      matrix:
+        include:
+          - name: ""
+            context: .
+          - name: /cosi-controller
+            context: images/cosi-controller
+          - name: /cosi-sidecar
+            context: images/cosi-sidecar
     permissions:
       contents: read
       packages: write
@@ -48,7 +60,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}${{ matrix.name }}
           tags: |
             type=semver,pattern=v{{version}}
             type=semver,pattern=v{{major}}.{{minor}}
@@ -62,7 +74,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ${{ matrix.context }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
