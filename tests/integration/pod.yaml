@@ -1,0 +1,66 @@
+# Runs tests/integration inside a driver image, on the storage network, with
+# the driver's config. See "Integration tests" in the README.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cosi-integration-tests
+  annotations:
+    k8s.v1.cni.cncf.io/networks: storage-network
+    # Otherwise an admin can land on another SCC, such as Portworx's, whose
+    # read-only root filesystem stops pip from working.
+    openshift.io/required-scc: restricted-v2
+spec:
+  restartPolicy: Never
+  securityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  initContainers:
+    # The driver image has no pytest. Install it beside the image rather than
+    # into a test build, so the tests run against the image under test.
+    - name: install-pytest
+      image: registry.access.redhat.com/ubi9/python-314:9.8
+      command: [python3, -m, pip, install, --no-cache-dir, --target=/deps, pytest]
+      securityContext: &restricted
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: [ALL]
+      resources: &resources
+        requests:
+          cpu: 10m
+          memory: 192Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi
+      volumeMounts:
+        - name: deps
+          mountPath: /deps
+  containers:
+    - name: tests
+      # Set this to the image under test.
+      image: ghcr.io/cci-moc/pure-cosi:v0.1.0
+      imagePullPolicy: Always
+      command: [python, -m, pytest, /tests, -v, --tb=short, -p, no:cacheprovider]
+      env:
+        - name: COSI_INTEGRATION_TESTS
+          value: "1"
+        - name: PYTHONPATH
+          value: /app/src:/app/src/cosi_driver:/deps
+        - name: PYTHONDONTWRITEBYTECODE
+          value: "1"
+      envFrom:
+        - secretRef:
+            name: pure-cosi-config
+      securityContext: *restricted
+      resources: *resources
+      volumeMounts:
+        - name: deps
+          mountPath: /deps
+        - name: tests
+          mountPath: /tests
+  volumes:
+    - name: deps
+      emptyDir: {}
+    - name: tests
+      configMap:
+        name: cosi-integration-tests
