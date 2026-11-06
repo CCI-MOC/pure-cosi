@@ -7,7 +7,10 @@ USER 0
 RUN git clone --depth 1 --branch ${COSI_VERSION} \
       https://github.com/kubernetes-sigs/container-object-storage-interface /src
 WORKDIR /src/sidecar
-ENV GOTOOLCHAIN=local GOFLAGS=-mod=vendor CGO_ENABLED=1 GOEXPERIMENT=strictfipsruntime
+# -p and GOMAXPROCS cap the build on many-core nodes, where it otherwise
+# hits the build pod's process limit.
+ENV GOTOOLCHAIN=local GOFLAGS="-mod=vendor -p=4" GOMAXPROCS=4 \
+    CGO_ENABLED=1 GOEXPERIMENT=strictfipsruntime
 RUN go build -tags strictfipsruntime -o /out/sidecar ./cmd
 
 FROM registry.access.redhat.com/ubi9/ubi-minimal:latest

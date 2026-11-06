@@ -16,7 +16,9 @@ changed.
 CI publishes them as `ghcr.io/cci-moc/pure-cosi/cosi-controller` and
 `ghcr.io/cci-moc/pure-cosi/cosi-sidecar`.
 
-Checked 2026-11-05 on a FIPS-mode cluster: Red Hat's `check-payload` passes
-both images (upstream's fail it: "go binary is not CGO_ENABLED"), and both
-binaries start. Not yet tested together with the driver against a
-FlashBlade.
+Checked 2026-11-05 on jetty (FIPS mode on): Red Hat's `check-payload` passes
+both images (upstream's fail it: "go binary is not CGO_ENABLED"). With the
+UBI driver, all three ran a full bucket lifecycle against the FlashBlade: a
+BucketClaim and BucketAccess got a bucket and an S3 key Secret, and deleting
+them revoked the key, removed the Secret and eradicated the bucket. Each
+component had RHEL's OpenSSL and its FIPS provider loaded.
