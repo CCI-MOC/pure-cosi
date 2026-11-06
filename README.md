@@ -36,6 +36,28 @@ grpcurl -plaintext \
   unix:///tmp/cosi.sock cosi.v1alpha1.Identity/DriverGetInfo
 ```
 
+## Integration tests
+
+`tests/integration` runs the driver's bucket and access calls against a real FlashBlade, and checks FIPS behaviour on a FIPS-mode node. They skip unless `COSI_INTEGRATION_TESTS=1`, so CI does not run them.
+
+They create uniquely named objects (`cosi-it-*`) in the configured account and realm, and remove them afterwards.
+
+From anywhere that can reach the FlashBlade's management address:
+
+```
+COSI_INTEGRATION_TESTS=1 PUREFB_TARGET=... PUREFB_API_TOKEN=... PUREFB_REALM=... PUREFB_S3_ACCOUNT=... \
+  uv run pytest tests/integration -v
+```
+
+To test an image on a cluster (needed for the FIPS tests), from the driver's namespace, which has the `pure-cosi-config` secret and the `storage-network` attachment. Set the image in `pod.yaml` first:
+
+```
+oc create configmap cosi-integration-tests --from-file=tests/integration/
+oc apply -f tests/integration/pod.yaml
+oc logs -f cosi-integration-tests
+oc delete pod/cosi-integration-tests configmap/cosi-integration-tests
+```
+
 ## Deploying it on OpenShift
 
 ### Deploy the COSI Controller, CRDs and COSI driver
